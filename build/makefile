@@ -1,10 +1,18 @@
 build:
-	gcc -pedantic -Wall -Wextra -Wfloat-equal -Wundef -Wshadow -Wpointer-arith  -Wno-missing-braces -Wno-missing-field-initializers -Werror  -Wlogical-op \
+	gcc  -Wall -Wextra -Wfloat-equal -Wundef -Wshadow -Wpointer-arith  -Wno-missing-braces -Wno-missing-field-initializers -Werror  -Wlogical-op \
 	-Wcast-align -Wstrict-prototypes -Wstrict-overflow=5 -Wwrite-strings -Waggregate-return -Wcast-qual  -Wswitch-enum \
-	-Wconversion -Wunreachable-code -Wformat=2 ../src/main.c -lSDL2 -lSDL2main -o main
+	-Wconversion -Wunreachable-code -Wformat=2 ../src/main.c ../src/glad.c -lglfw -lGL -lm -lX11 -lpthread -lXi -lXrandr -ldl -o main
+
+builde:
+	gcc  -Wall -Wextra -Wfloat-equal -Wundef -Wshadow -Wpointer-arith  -Wno-missing-braces -Wno-missing-field-initializers  -Wlogical-op \
+	-Wcast-align -Wstrict-prototypes -Wstrict-overflow=5 -Wwrite-strings -Waggregate-return -Wcast-qual  -Wswitch-enum \
+	-Wconversion -Wunreachable-code -Wformat=2 ../src/main.c ../src/glad.c -lglfw -lGL -lm -lX11 -lpthread -lXi -lXrandr -ldl -o main
 
 run:
 	./main
 
+prime-run:
+	prime-run ./main
+	
 clean:
 	rm main
