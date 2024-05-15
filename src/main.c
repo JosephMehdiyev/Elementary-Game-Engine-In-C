@@ -1,96 +1,67 @@
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_events.h>
-#include <SDL2/SDL_keycode.h>
-#include <SDL2/SDL_render.h>
-#include <SDL2/SDL_video.h>
+#include <stdlib.h>
 #include <stdio.h>
-#include "../include/constants.h"
-
-int program_is_running = FALSE;
-SDL_Window* window = NULL;
-SDL_Renderer* renderer = NULL;
 
 
-int initialize_window(void) {
-    if (SDL_Init(SDL_INIT_EVERYTHING) !=0){
-        fprintf(stderr, "Error initializing SDL.\n");
-        return FALSE;
-    }
-    window = SDL_CreateWindow(
-        "Cormat",
-        SDL_WINDOWPOS_CENTERED,
-        SDL_WINDOWPOS_CENTERED,
-        1024,
-        576,
-        SDL_WINDOW_SHOWN
-    );
-    if (!window) {
-        fprintf(stderr, "Error creating the SDL Window. \n");
-        return FALSE;
-    }
-    
-    renderer = SDL_CreateRenderer(window, -1, 0);
-    if (!renderer){
-        fprintf(stderr,"Error creating the SDL Render");
-        return FALSE;
-    }
+#include "../include/glad/glad.h"
+#include <GLFW/glfw3.h>
 
-    return TRUE;
+// SETTINGS
+const unsigned int SCR_WIDTH = 800;
+const unsigned int SCR_HEIGHT = 600;
+
+
+
+void framebuffer_size_callback (GLFWwindow *window, int width, int height) {
+    glViewport(0, 0, width, height);
+    (void)(window);
 }
-
-void process_input(void) {
-    SDL_Event event;
-    SDL_PollEvent(&event);
-
-
-
-    switch (event.type){
-        case SDL_QUIT:
-            program_is_running = FALSE;
-            break;
-        case SDL_KEYDOWN:
-            if (event.key.keysym.sym == SDLK_ESCAPE)
-                program_is_running = FALSE;
-            break;
-        case SDL_WINDOWEVENT:
-            if (event.window.event == SDL_WINDOWEVENT_CLOSE)
-                program_is_running = FALSE;
-            break;
-    }
+void processInput (GLFWwindow *window) {
+    if(glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+        glfwSetWindowShouldClose(window, 0);
 }
-
-void update(void) {
-
-}
-
-void render(void) {
-
-}
-
-void quit_window(void) {
-    SDL_DestroyRenderer(renderer);
-    SDL_DestroyWindow(window);
-    SDL_Quit();
-}
-
-void setup(void) {
-
-}
-
-
 
 int main(void) {
-    program_is_running = initialize_window();
+    // initialize glfw and configure
+    
+    glfwInit();
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-    setup();
+    // create glfw window
+    
+    GLFWwindow* window = glfwCreateWindow(800, 600, "Cormat", NULL, NULL);
+    if (window == NULL)
+    {
+        printf("Failed to create GLFW window\n");
+        glfwTerminate();
+        return -1;
+    }
+    glfwMakeContextCurrent(window);
+    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
-    while (program_is_running) {
-        process_input();
-        update();
-        render();
+    //GLAD: load OPENGL function pointers
+
+    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+    {
+        printf("Failed to initialize GLAD \n");
+        return -1;
+    }    
+    
+    // render loop, the main engine thingy
+
+    while (!glfwWindowShouldClose(window))
+    {
+        // input
+        // -----
+        processInput(window);
+
+        // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
+        // -------------------------------------------------------------------------------
+        glfwSwapBuffers(window);
+        glfwPollEvents();
     }
 
-    quit_window();
-
-    return 0    ;
-}       
+    glfwTerminate();
+    return 0;
+}
