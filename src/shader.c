@@ -95,10 +95,10 @@ unsigned int shaderProgramtest(void)
 }
 
 
-mat4* shaderProjection(float SCR_WIDTH, float SCR_HEIGHT, unsigned int shaderProgram)
+mat4* shaderProjection(float SCR_WIDTH, float SCR_HEIGHT, unsigned int shaderProgram, float fov)
 {
     mat4 projection = GLM_MAT4_IDENTITY_INIT;
-    glm_perspective(glm_rad(45.0f), (float)SCR_WIDTH/(float)SCR_HEIGHT, 0.1f, 100.0f, projection);
+    glm_perspective(glm_rad(fov), (float)SCR_WIDTH/(float)SCR_HEIGHT, 0.1f, 100.0f, projection);
     int projectionLoc = glGetUniformLocation(shaderProgram, "projection");
     glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, projection[0]);   
     mat4* pprojection = &projection;

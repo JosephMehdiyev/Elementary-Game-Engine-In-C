@@ -7,7 +7,12 @@
 #include <cglm/cglm.h>
 
 
-
+bool firstMouse = true;
+float yaw   = -90.0f;	// yaw is initialized to -90.0 degrees since a yaw of 0.0 results in a direction vector pointing to the right so we initially rotate a bit to the left.
+float pitch =  0.0f;
+float lastX =  800.0f / 2.0;
+float lastY =  600.0 / 2.0;
+float fov   =  45.0f;
 
 
 void framebuffer_size_callback (GLFWwindow *window, int width, int height) 
@@ -15,34 +20,56 @@ void framebuffer_size_callback (GLFWwindow *window, int width, int height)
     glViewport(0, 0, width, height);
     (void)(window);
 }
-
-GLFWwindow* initGLFW(void)
+void mouse_callback(GLFWwindow* window, double xposIn, double yposIn)
 {
-    glfwInit();
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+    float xpos = (float)(xposIn);
+    float ypos = (float)(yposIn);
 
-    // create glfw window
-    
-    GLFWwindow* window = glfwCreateWindow(800, 600, "Cormat", NULL, NULL);
-    if (window == NULL)
+    if (firstMouse)
     {
-        printf("Failed to create GLFW window\n");
-        glfwTerminate();
+        lastX = xpos;
+        lastY = ypos;
+        firstMouse = false;
     }
-    glfwMakeContextCurrent(window);
-    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
-    //GLAD: load OPENGL function pointers
+    float xoffset = xpos - lastX;
+    float yoffset = lastY - ypos; // reversed since y-coordinates go from bottom to top
+    lastX = xpos;
+    lastY = ypos;
 
-    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
-    {
-        printf("Failed to initialize GLAD \n");
-    }    
+    float sensitivity = 0.1f; // change this value to your liking
+    xoffset *= sensitivity;
+    yoffset *= sensitivity;
 
-    return window;
+    yaw += xoffset;
+    pitch += yoffset;
+
+    // make sure that when pitch is out of bounds, screen doesn't get flipped
+    if (pitch > 89.0f)
+        pitch = 89.0f;
+    if (pitch < -89.0f)
+        pitch = -89.0f;
+
+    vec3 front;
+    front[0] = (float)cos(glm_rad(yaw)) * cos(glm_rad(pitch));
+    front[1] = (float)sin(glm_rad(pitch));
+    front[2] = (float)sin(glm_rad(yaw)) * cos(glm_rad(pitch));
+    (void)(window);
+
 }
+
+void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
+{
+    fov -= (float)yoffset;
+    if (fov < 1.0f)
+        fov = 1.0f;
+    if (fov > 45.0f)
+        fov = 45.0f;
+    (void)(window);
+    (void)(xoffset);
+}
+
+
 
 void processInput (GLFWwindow *window, vec3 cameraPos, vec3 cameraFront, vec3 cameraUp) 
 {
@@ -78,6 +105,42 @@ void processInput (GLFWwindow *window, vec3 cameraPos, vec3 cameraFront, vec3 ca
         glm_vec3_add(cameraPos, buffer2, cameraPos);
     }
 }
+
+GLFWwindow* initGLFW(void)
+{
+    glfwInit();
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
+    // create glfw window
+    
+    GLFWwindow* window = glfwCreateWindow(800, 600, "Cormat", NULL, NULL);
+    if (window == NULL)
+    {
+        printf("Failed to create GLFW window\n");
+        glfwTerminate();
+    }
+    glfwMakeContextCurrent(window);
+    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+
+    //GLAD: load OPENGL function pointers
+
+    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+    {
+        printf("Failed to initialize GLAD \n");
+    }    
+
+    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+    glfwMakeContextCurrent(window);
+    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+    glfwSetCursorPosCallback(window, mouse_callback);
+    glfwSetScrollCallback(window, scroll_callback);
+
+    return window;
+}
+
+
 
 
 

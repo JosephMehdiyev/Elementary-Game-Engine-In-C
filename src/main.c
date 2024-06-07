@@ -15,12 +15,15 @@ const unsigned int SCR_HEIGHT = 600;
 vec3 cameraPos = {0.0f, 0.0f, 3.0f};
 vec3 cameraFront = {0.0f, 0.0f, -1.0f};
 vec3 cameraUp = {0.0f, 1.0f, 0.0f};
+
 //
+
 
 
 
 int main(void)
 {
+
     // initialize glfw window 
     GLFWwindow* window = initGLFW();
 
@@ -31,7 +34,7 @@ int main(void)
          0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
          0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
          0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-        -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
+        -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,   
         -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
 
         -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
@@ -78,18 +81,6 @@ int main(void)
 
 
 
-
-
- 
-
-
-
-
-
-
-    // settings
-
-
     
     
 
@@ -128,17 +119,15 @@ int main(void)
     {   
 
 
-        mat4* projection = shaderProjection(SCR_WIDTH, SCR_HEIGHT, shaderProgram);
+        mat4* projection = shaderProjection((float)SCR_WIDTH, (float)SCR_HEIGHT, shaderProgram, fov);
         mat4* view = shaderView(cameraPos, cameraFront, cameraUp, shaderProgram);
         mat4* model = shaderModel(shaderProgram);
 
+        // IMPORTANT!!!! DELETE THIS IF YOU HAVE TO USE THESE VARIABLES
+        (void) projection, (void)view, (void)model;
 
 
-        // Camera direction and its target, not yet used
-        // vec3 cameraTarget = {0.0f, 0.0f, 0.0f};
-        // vec3 cameraDirection;
-        // glm_vec3_sub(cameraPos, cameraTarget, cameraDirection);
-        // glm_vec3_normalize(cameraDirection);
+
  
 
         
