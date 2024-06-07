@@ -77,7 +77,7 @@ void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 
 
 
-void processInput (GLFWwindow *window, vec3 cameraPos, vec3 cameraFront, vec3 cameraUp) 
+void processInput (GLFWwindow *window) 
 {
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
     {

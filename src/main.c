@@ -13,11 +13,6 @@ const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
 
 
-//
-
-
-
-
 int main(void)
 {
 
@@ -73,6 +68,8 @@ int main(void)
     // Texture stuff, generates, loads the texture files
     unsigned int texture = generateTexture();
     textureload("../resources/textures/container.jpg");
+
+    
     // Makes a shader program
     unsigned int shaderProgram = shaderProgramtest();
 
@@ -86,19 +83,15 @@ int main(void)
     glGenVertexArrays(1, &VAO);
     glGenBuffers(1, &VBO);
 
-    // bind the Vertex Array Object first, then bind and set vertex buffer(s), and then configure vertex attributes(s).
     glBindVertexArray(VAO);
 
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
  
-
-
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float),(void*)(3* sizeof(float)));
     glEnableVertexAttribArray(2);
-
 
     glUseProgram(shaderProgram);
     glEnable(GL_DEPTH_TEST);
@@ -119,27 +112,12 @@ int main(void)
         mat4* projection = shaderProjection((float)SCR_WIDTH, (float)SCR_HEIGHT, shaderProgram, fov);
         mat4* view = shaderView(cameraPos, cameraFront, cameraUp, shaderProgram);
         mat4* model = shaderModel(shaderProgram);
-
-        // IMPORTANT!!!! DELETE THIS IF YOU HAVE TO USE THESE VARIABLES
+        // NOTE: DELETE THIS IF YOU HAVE TO USE THESE VARIABLES
         (void) projection, (void)view, (void)model;
 
 
-
- 
-
-        
-
-  
-
-
-        
-
         textureParameters();
-        // input
-        // -----
 
-        // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
-        // -------------------------------------------------------------------------------
         glClearColor(1.0f, 1.0f, 1.0f, 1.0f);   
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -148,7 +126,8 @@ int main(void)
         glBindVertexArray(VAO);
         glDrawArrays(GL_TRIANGLES, 0, 36);
         
-        processInput(window, cameraPos, cameraFront, cameraUp);
+
+        processInput(window);
 
         glfwSwapBuffers(window);
         glfwPollEvents();

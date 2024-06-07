@@ -11,11 +11,14 @@ extern float fov;
 void framebuffer_size_callback (GLFWwindow *window, int width, int height);
 
 // Handles input, movement, zoom, moving around etc.
-void processInput (GLFWwindow *window, vec3 cameraPos, vec3 cameraFront, vec3 cameraUp);
+void processInput (GLFWwindow *window);
 // Initialize a GLFW window automatically
 GLFWwindow* initGLFW(void);
 
-//
+// Makes looking around with mouse possible.
 void mouse_callback(GLFWwindow* window, double xposIn, double yposIn);
+
+// Makes zoom in and zoom out possible.
+void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 
 #endif
