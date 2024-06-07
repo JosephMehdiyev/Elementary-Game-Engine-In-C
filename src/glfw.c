@@ -13,6 +13,11 @@ float pitch =  0.0f;
 float lastX =  800.0f / 2.0;
 float lastY =  600.0 / 2.0;
 float fov   =  45.0f;
+vec3 cameraFront = {0.0f, 0.0f, -1.0f};
+vec3 cameraPos = {0.0f, 0.0f, 3.0f};
+vec3 cameraUp = {0.0f, 1.0f, 0.0f};
+
+
 
 
 void framebuffer_size_callback (GLFWwindow *window, int width, int height) 
@@ -54,6 +59,7 @@ void mouse_callback(GLFWwindow* window, double xposIn, double yposIn)
     front[0] = (float)cos(glm_rad(yaw)) * cos(glm_rad(pitch));
     front[1] = (float)sin(glm_rad(pitch));
     front[2] = (float)sin(glm_rad(yaw)) * cos(glm_rad(pitch));
+    glm_vec3_normalize_to(front,cameraFront);
     (void)(window);
 
 }
