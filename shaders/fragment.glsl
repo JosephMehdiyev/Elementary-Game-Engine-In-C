@@ -1,6 +1,13 @@
 #version 460 core
 out vec4 FragColor;
-in vec4 vertexColor; // input variable from vs (same name and type)
-void main() {
-    FragColor = vertexColor;
+
+in vec3 ourColor;
+in vec2 TexCoord;
+
+uniform sampler2D texture1;
+
+
+void main() 
+{
+    FragColor =  texture(texture1, TexCoord);
 }
