@@ -1,13 +1,4 @@
-/* Loads the content of a GLSL Shader file into a char* variable */
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <cglm/cglm.h>
-#include "../include/glad/glad.h"
 #include "shader.h"
-#include "../include/glad/glad.h"
-#include <GLFW/glfw3.h>
-
 
 
 // A file reader that outputs the source code in strings
@@ -42,19 +33,18 @@ const char* shaderSource(const char* shaderPath)
 }
 
 // Builds, compiles, linkes the shader and returns finalized product. The name will be changed soon
-unsigned int shaderProgramtest(void)
+unsigned int shaderProgramAll(const char* vertexSource, const char* fragmentSource)
 {
     // build and compile shaders  
     //
     // Shader source files
-    const char* vertexShaderSource = shaderSource("../shaders/vertex.glsl");
-    const char* fragmentShaderSource = shaderSource("../shaders/fragment.glsl");
+    const char* vertexShaderSource = shaderSource(vertexSource);
+    const char* fragmentShaderSource = shaderSource(fragmentSource);
     // vertex shader
     unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);
     glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
     glCompileShader(vertexShader);
     // check errors
-
     int success;
     char infoLog[512];
     glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
@@ -65,7 +55,6 @@ unsigned int shaderProgramtest(void)
     }
 
     // fragment shader
-
     unsigned int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
     glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
     glCompileShader(fragmentShader);
@@ -95,17 +84,16 @@ unsigned int shaderProgramtest(void)
 }
 
 
-mat4* shaderProjection(float SCR_WIDTH, float SCR_HEIGHT, unsigned int shaderProgram, float fov)
+void shaderProjection(float SCR_WIDTH, float SCR_HEIGHT, unsigned int shaderProgram, float fov)
 {
     mat4 projection = GLM_MAT4_IDENTITY_INIT;
     glm_perspective(glm_rad(fov), (float)SCR_WIDTH/(float)SCR_HEIGHT, 0.1f, 100.0f, projection);
     int projectionLoc = glGetUniformLocation(shaderProgram, "projection");
     glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, projection[0]);   
-    mat4* pprojection = &projection;
-    return pprojection;
+
 }
 
-mat4* shaderView(vec3 cameraPos, vec3 cameraFront, vec3 cameraUp, unsigned int shaderProgram)
+void shaderView(vec3 cameraPos, vec3 cameraFront, vec3 cameraUp, unsigned int shaderProgram)
 {
     mat4 view = GLM_MAT4_IDENTITY_INIT;
     glm_translate(view, (vec3){0.0f, 0.0f, -3.0f} );  
@@ -114,18 +102,15 @@ mat4* shaderView(vec3 cameraPos, vec3 cameraFront, vec3 cameraUp, unsigned int s
     glm_lookat(cameraPos, buffer, cameraUp, view);
     int viewLoc = glGetUniformLocation(shaderProgram, "view");
     glUniformMatrix4fv(viewLoc, 1, GL_FALSE, view[0]);
-    mat4* pview = &view;
-    return pview;
 }
 
-mat4* shaderModel(unsigned int shaderProgram)
+void shaderModel(unsigned int shaderProgram)
 {
     mat4 model = GLM_MAT4_IDENTITY_INIT;
     glm_rotate(model, (float)glfwGetTime() * glm_rad(50.0f), (vec3){0.5f, 1.0f, 0.0f});
-    int modelLoc = glGetUniformLocation(shaderProgram, "model");
+    int modelLoc = glGetUniformLocation(shaderProgram, "rotate");
     glUniformMatrix4fv(modelLoc, 1, GL_FALSE, model[0]);     
-    mat4* pmodel = &model; 
-    return pmodel;
+
 }
 
 

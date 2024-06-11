@@ -7,13 +7,16 @@ extern vec3 cameraPos;
 extern vec3 cameraFront;
 extern vec3 cameraUp;
 extern float fov;
+extern bool gridflag;
+
+
 // Handles the stuff when you increase your window size (for example, going full screen with f11 etc)
 void framebuffer_size_callback (GLFWwindow *window, int width, int height);
 
 // Handles input, movement, zoom, moving around etc.
 void processInput (GLFWwindow *window);
 // Initialize a GLFW window automatically
-GLFWwindow* initGLFW(void);
+GLFWwindow* initGLFW(int SCR_WIDTH, int SCR_HEIGHT);
 
 // Makes looking around with mouse possible.
 void mouse_callback(GLFWwindow* window, double xposIn, double yposIn);
