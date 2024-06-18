@@ -88,7 +88,7 @@ void processInput (GLFWwindow *window)
     {
         glfwSetWindowShouldClose(window, true);
     }   
-    const float cameraSpeed = 0.05f; 
+    const float cameraSpeed = 0.01f; 
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
     {
         vec3 buffer;

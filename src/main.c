@@ -22,11 +22,11 @@ int main(void)
     // Texture stuff, generates, loads the texture files
 
     // Makes a shader program
-    unsigned int shaderCube = shaderProgramAll("../shaders/vertex.glsl", "../shaders/fragment.glsl");
     unsigned int shaderGrid = shaderProgramAll("../shaders/floorGrid.vert", "../shaders/floorGrid.frag");
 
     textureParameters();
     unsigned int texture = generateTexture();
+    (void)texture;
     textureload("../resources/textures/dark.png");
 
 
@@ -34,15 +34,9 @@ int main(void)
     while (!glfwWindowShouldClose(window))
     {   
 
-        shaderProjection((float)SCR_WIDTH, (float)SCR_HEIGHT, shaderCube, fov);
-        shaderView(cameraPos, cameraFront, cameraUp, shaderCube);
-        shaderTransform(shaderCube);
-
         shaderProjection((float)SCR_WIDTH, (float)SCR_HEIGHT, shaderGrid, fov);
         shaderView(cameraPos, cameraFront, cameraUp, shaderGrid);
         shaderTransform(shaderGrid);
-
-        drawCube(shaderCube);
 
         drawGrid(shaderGrid);
 
