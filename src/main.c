@@ -17,29 +17,38 @@ int main(void)
 {
 
     // initialize glfw window 
-    GLFWwindow* window = initGLFW(SCR_WIDTH, SCR_HEIGHT);
+    GLFWwindow* window = initGLFW((int)SCR_WIDTH, (int)SCR_HEIGHT);
 
     // Texture stuff, generates, loads the texture files
 
     // Makes a shader program
-    unsigned int shaderGrid = shaderProgramAll("../shaders/floorGrid.vert", "../shaders/floorGrid.frag");
     unsigned int shaderCube = shaderProgramAll("../shaders/vertex.glsl", "../shaders/fragment.glsl");
+    unsigned int shaderGrid = shaderProgramAll("../shaders/floorGrid.vert", "../shaders/floorGrid.frag");
+
+    textureParameters();
     unsigned int texture = generateTexture();
     textureload("../resources/textures/dark.png");
+
+
     // render loop, the main engine thing
     while (!glfwWindowShouldClose(window))
     {   
 
+        shaderProjection((float)SCR_WIDTH, (float)SCR_HEIGHT, shaderCube, fov);
+        shaderView(cameraPos, cameraFront, cameraUp, shaderCube);
+        shaderTransform(shaderCube);
+
         shaderProjection((float)SCR_WIDTH, (float)SCR_HEIGHT, shaderGrid, fov);
         shaderView(cameraPos, cameraFront, cameraUp, shaderGrid);
-        shaderModel(shaderGrid);
+        shaderTransform(shaderGrid);
+
+        drawCube(shaderCube);
+
         drawGrid(shaderGrid);
 
-
-  
+        glfwSwapBuffers(window);
 
         processInput(window);
-        glfwSwapBuffers(window);
 
         glfwPollEvents();
 

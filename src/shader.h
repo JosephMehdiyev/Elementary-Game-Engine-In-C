@@ -22,7 +22,7 @@ void shaderProjection(float SCR_WIDTH, float SCR_HEIGHT, unsigned int shaderProg
 void shaderView(vec3 cameraPos, vec3 cameraFront, vec3 cameraUp, unsigned int shaderProgram);
 
 // Makes the model matrix and sends it into the shader.
-void shaderModel(unsigned int shaderProgram);
+void shaderTransform(unsigned int shaderProgram);
 
 
 

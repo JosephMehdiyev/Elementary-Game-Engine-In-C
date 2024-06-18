@@ -103,12 +103,12 @@ void shaderView(vec3 cameraPos, vec3 cameraFront, vec3 cameraUp, unsigned int sh
     int viewLoc = glGetUniformLocation(shaderProgram, "view");
     glUniformMatrix4fv(viewLoc, 1, GL_FALSE, view[0]);
 }
-
-void shaderModel(unsigned int shaderProgram)
+// Is also called model matrix
+void shaderTransform(unsigned int shaderProgram)
 {
     mat4 model = GLM_MAT4_IDENTITY_INIT;
     glm_rotate(model, (float)glfwGetTime() * glm_rad(50.0f), (vec3){0.5f, 1.0f, 0.0f});
-    int modelLoc = glGetUniformLocation(shaderProgram, "rotate");
+    int modelLoc = glGetUniformLocation(shaderProgram, "transform");
     glUniformMatrix4fv(modelLoc, 1, GL_FALSE, model[0]);     
 
 }
