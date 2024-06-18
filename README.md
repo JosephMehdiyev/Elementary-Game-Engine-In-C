@@ -1,5 +1,5 @@
-# Cormat ![C](https://img.shields.io/badge/-%2300599C.svg?style=Plastic&logo=c&logoColor=white) ![OpenGL](https://img.shields.io/badge/OpenGL-%23FFFFFF.svg?style=Plastic&logo=opengl)
-Cormat is a 3D/2D engine for visualizing mathematical graphs and for physics simulations. Currently, it is in the development and barely anything is done.
+# About the project ![C](https://img.shields.io/badge/-%2300599C.svg?style=Plastic&logo=c&logoColor=white) ![OpenGL](https://img.shields.io/badge/OpenGL-%23FFFFFF.svg?style=Plastic&logo=opengl)
+This project ( was supposed to be) a 3D/2D engine for visualizing mathematical graphs and for physics simulations. Currently, it is abandoned in favor of C++ version.
 # Important Note
 The project is abandoned in favor of C++ version of the project. I have realized how pointless it is to write this in C without classes and OOP. 
 I will abandon this repository and open a new repository fully written in C++.
